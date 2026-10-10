@@ -31,11 +31,28 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # 站点地址是 https://redoop.github.io/www-next/ → basePath 必须是 /www-next。
-      # 将来若绑自定义域名(根路径), 把这个仓库变量改成空字符串即可, 不必改代码。
+      # basePath 由「是否绑了自定义域名」自动推导, 不再需要人工维护变量:
+      #   绑了域名  → 站点在根路径        → basePath = ""
+      #   没绑域名  → github.io/<repo>/   → basePath = "/<repo>"
+      # 之前的故障就是绑了域名却还留着 basePath=/www-next, 导致资源全 404。
+      - name: Resolve basePath
+        id: base
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cname=$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq '.cname // ""' 2>/dev/null || echo "")
+          if [ -n "$cname" ]; then
+            echo "base_path=" >> "$GITHUB_OUTPUT"
+            echo "custom domain: $cname → basePath 为空"
+          else
+            echo "base_path=/${GITHUB_REPOSITORY#*/}" >> "$GITHUB_OUTPUT"
+            echo "无自定义域名 → basePath=/${GITHUB_REPOSITORY#*/}"
+          fi
+
       - name: Build static export
         env:
-          NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH }}
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.base.outputs.base_path }}
         run: pnpm exec next build
 
       # GitHub Pages 的 Jekyll 会丢掉 `_` 开头的目录/文件(_next, __next.*.txt)
