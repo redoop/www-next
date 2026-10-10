@@ -2,15 +2,15 @@
 import {products} from '@/lib/products';
 import {ui, lp, type Lang} from '@/lib/i18n';
 import Link from 'next/link';
+import {asset} from '@/lib/asset';
 
-const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 // 静态托管没有后端: 表单不落库, 直接交给访客的邮件客户端.
 const CONTACT_MAIL = 'tongxiaojun@redoop.com';
 import {usePathname} from 'next/navigation';
 import {useEffect, useState} from 'react';
 export function Arrow(){return <span aria-hidden="true">↗</span>}
-export function Logo(){return <Link href="/" className="brand official-brand" aria-label="REDOOP"><img src="https://www.redoop.com/images/logo.png" alt="REDOOP 红象云腾" width="279" height="33"/></Link>}
-function LangSwitch({lang}:{lang:Lang}){const path=usePathname();const other:Lang=lang==='zh'?'en':'zh';const bare=((path||'/').replace(/^\/en(?=\/|$)/,'').replace(/\/+$/,''))||'/';const other_path=lp(other,bare);const target=`${BASE}${other_path==='/'?'/':other_path+'/'}`;return <a className="lang-switch" href={target} hrefLang={other} aria-label={other==='en'?'Switch to English':'切换到中文'}>{ui[lang].langLabel}<span aria-hidden="true">⇄</span></a>}
+export function Logo(){return <Link href="/" className="brand official-brand" aria-label="REDOOP"><img src={asset('/images/logo.png')} alt="REDOOP 红象云腾" width="279" height="33"/></Link>}
+function LangSwitch({lang}:{lang:Lang}){const path=usePathname();const other:Lang=lang==='zh'?'en':'zh';const bare=((path||'/').replace(/^\/en(?=\/|$)/,'').replace(/\/+$/,''))||'/';const other_path=lp(other,bare);const target=asset(other_path==='/'?'/':other_path+'/');return <a className="lang-switch" href={target} hrefLang={other} aria-label={other==='en'?'Switch to English':'切换到中文'}>{ui[lang].langLabel}<span aria-hidden="true">⇄</span></a>}
 export function Header({lang}:{lang:Lang}){const path=usePathname();const [open,setOpen]=useState(false);const t=ui[lang];return <header className="header"><div className="container header-inner"><Logo/><nav className={open?'nav open':'nav'} aria-label={lang==='zh'?'主导航':'Main navigation'}>{t.nav.map(([href,title])=>{const full=lp(lang,href);return <Link key={href} href={full} className={path===full?'active':''} onClick={()=>setOpen(false)}>{title}</Link>})}<div className="nav-mobile-extra"><LangSwitch lang={lang}/><Link className="button red" href={lp(lang,'/contact')}>{t.navCta}</Link></div></nav><div className="header-actions"><LangSwitch lang={lang}/><Link className="nav-cta" href={lp(lang,'/contact')}>{t.navCta} <Arrow/></Link><button className="menu-button" onClick={()=>setOpen(!open)} aria-expanded={open} aria-label={t.menuLabel}>{open?'✕':'☰'}</button></div></div></header>}
 export function Footer({lang}:{lang:Lang}){const t=ui[lang];return <footer><div className="container footer-top"><div><Logo/><p>{t.footerTagline}</p></div><div className="footer-links">{[['/products',t.nav[1][1]],['/cases',t.nav[2][1]],['/about',t.nav[3][1]],['/contact',t.nav[4][1]]].map(([href,title])=><Link key={href} href={lp(lang,href)}>{title}</Link>)}</div></div><div className="container footer-bottom"><span>{t.copyright(new Date().getFullYear())}</span><a href="https://www.redoop.com/" target="_blank" rel="noopener noreferrer">{t.footerSource}</a><span>{t.footerEn}</span></div></footer>}
 export function CTA({lang}:{lang:Lang}){const t=ui[lang].cta;return <section className="cta container"><div><span className="eyebrow">{t.eyebrow}</span><h2>{t.title}</h2><p>{t.text}</p></div><Link href={lp(lang,'/contact')} className="button red">{t.button} <Arrow/></Link></section>}
