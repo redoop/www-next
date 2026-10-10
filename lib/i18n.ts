@@ -5,11 +5,11 @@ export const switchPath = (lang: Lang, path: string) => (lang === 'zh' ? path.re
 export const ui = {
   zh: {
     langLabel: 'EN',
-    nav: [['/', '首页'], ['/products', '产品介绍'], ['/cases', '客户案例'], ['/about', '关于我们'], ['/contact', '联系我们']] as [string, string][],
+    nav: [['/', '首页'], ['/products', '产品介绍'], ['/solutions', '解决方案'], ['/ecology', '红象生态'], ['/cases', '客户案例'], ['/about', '关于我们'], ['/contact', '联系我们']] as [string, string][],
+    footerLinks: [['/products', '产品介绍'], ['/solutions', '解决方案'], ['/ecology', '红象生态'], ['/download', '产品试用'], ['/cases', '客户案例'], ['/contact', '联系我们']] as [string, string][],
     navCta: '开启合作',
     menuLabel: '展开导航',
     footerTagline: '以技术连接可能，以数据驱动未来。',
-    footerSource: '公开资料来源：www.redoop.com ↗',
     copyright: (y: number) => `© ${y} 红象云腾 · 版权所有`,
     footerEn: 'DATA DRIVES THE FUTURE.',
     cta: { eyebrow: 'LET’S BUILD WHAT’S NEXT', title: '下一种可能，从这里开始。', text: '与我们一起，探索适合您的 Redoop 大数据平台方案。', button: '与我们聊聊' },
@@ -24,11 +24,11 @@ export const ui = {
   },
   en: {
     langLabel: '中文',
-    nav: [['/', 'Home'], ['/products', 'Products'], ['/cases', 'Customer Stories'], ['/about', 'About Us'], ['/contact', 'Contact']] as [string, string][],
+    nav: [['/', 'Home'], ['/products', 'Products'], ['/solutions', 'Solutions'], ['/ecology', 'Ecosystem'], ['/cases', 'Customer Stories'], ['/about', 'About Us'], ['/contact', 'Contact']] as [string, string][],
+    footerLinks: [['/products', 'Products'], ['/solutions', 'Solutions'], ['/ecology', 'Ecosystem'], ['/download', 'Try Redoop'], ['/cases', 'Customer Stories'], ['/contact', 'Contact']] as [string, string][],
     navCta: 'Start a conversation',
     menuLabel: 'Toggle navigation',
     footerTagline: 'Connecting technology with what is possible.',
-    footerSource: 'Public source: www.redoop.com ↗',
     copyright: (y: number) => `© ${y} Redoop. All rights reserved.`,
     footerEn: 'DATA DRIVES THE FUTURE.',
     cta: { eyebrow: 'LET’S BUILD WHAT’S NEXT', title: 'The next possibility starts here.', text: 'Talk to us about the Redoop big data platform that fits your business.', button: 'Talk to us' },
